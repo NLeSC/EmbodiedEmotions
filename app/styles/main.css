@@ -164,7 +164,7 @@ g.node.selected {
 }
 
 .logo-vu {
-  background-image: url("../images/VUlogo.png");
+  background-image: url("../images/vu_logo.png");
   height: 100px;
   width: 100%;
   background-size: 67% auto;
@@ -173,7 +173,7 @@ g.node.selected {
 }
 
 .logo-nwr {
-  background-image: url("../images/NWR_logo_1920x200.png");
+  background-image: url("../images/nwr_logo.png");
   height: 100px;
   width: 100%;
   background-size: 100% auto;
@@ -182,7 +182,7 @@ g.node.selected {
 }
 
 .logo-nlesc {
-  background-image: url("../images/NLESClogo.png");
+  background-image: url("../images/nlesc_logo.png");
   height: 100px;
   width: 100%;
   background-size: 100% auto;

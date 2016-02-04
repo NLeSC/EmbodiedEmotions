@@ -26,6 +26,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-angular-templates');
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
+  grunt.registerTask('default', ['imagemin']);
 
   // Define the configuration for all the tasks
   grunt.initConfig({
@@ -262,13 +264,24 @@ module.exports = function(grunt) {
 
     imagemin: {
       dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
+        files: {
+          'dist/images/nlesc_logo.png': 'app/images/nlesc_logo.png', // 'destination': 'source'
+          'dist/images/nwr_logo.png': 'app/images/nwr_logo.png',
+          'dist/images/vu_logo.png': 'app/images/vu_logo.png'
+        }
       }
+      // ,
+      // dist: {
+      //  options: {
+      //     optimizationLevel: 3
+      //   },
+      //   files: [{
+      //     expand: true,
+      //     cwd: 'app/images',
+      //     src: '[**/*.{png,jpg,jpeg,gif,svg}]',
+      //     dest: '<%= yeoman.dist %>/images'
+      //   }]
+      // }
     },
 
     svgmin: {
@@ -276,7 +289,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.svg',
+          src: '[*/*.svg]',
           dest: '<%= yeoman.dist %>/images'
         }]
       }
