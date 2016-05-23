@@ -13,30 +13,6 @@
       }, []);
     };
 
-    //A renderlet that makes the text in the rowCharts to which it is applied more
-    //readable by changing the text color based on the background color.
-    // var textRenderlet = function(_chart) {
-    //   function setStyle(selection) {
-    //     var rects = selection.select('rect');
-    //     var texts = selection.select('text');
-    //
-    //     var colors = [];
-    //     rects.each( function(){
-    //       colors.push(d3.select(this).attr('fill'));
-    //     });
-    //
-    //     texts.each( function(){
-    //       d3.select(this).style('fill', function() {
-    //         return 'black';
-    //       });
-    //     });
-    //   }
-    //   // set the fill attribute for the bars
-    //   setStyle(_chart
-    //     .selectAll('g.row'), 'layer'
-    //   );
-    // };
-
     var findMine = function(sources, uri) {
       var result;
       sources.forEach(function(source) {
@@ -146,54 +122,6 @@
       });
     };
 
-    // function allPossibleCases(array) {
-    //   if (array.length === 1) {
-    //     return [array[0]];
-    //   } else {
-    //     var result = [];
-    //     result.push(array);
-    //
-    //     var theRest = allPossibleCases(array.slice(1));
-    //     if (theRest.length === 1) {
-    //       result.push(array[0]);
-    //     } else {
-    //       for (var i = 0; i < theRest.length; i++) {
-    //         for (var j = 0; j < array.length; j++) {
-    //           result.push([array[j], theRest[i]]);
-    //           result.push([theRest[i], array[j]]);
-    //         }
-    //       }
-    //     }
-    //
-    //     return result;
-    //   }
-    // }
-
-    // var onClickOverride = function(datum) {
-    //   if (!this.__dcFlag__) {
-    //     console.log('Tried overriding onClick on a non-dc chart');
-    //     return;
-    //   }
-    //
-    //   var chart = this;
-    //
-    //   console.log(chart.anchorName() + 'filter on: '+datum);
-    //
-    //   var filter = chart.keyAccessor()(datum);
-    //   dc.events.trigger(function () {
-    //     chart.filter(filter);
-    //     chart.redrawGroup();
-    //   });
-    //
-    //   setTimeout(
-    //     function() {
-    //       dc.events.trigger(function () {
-    //         chart.filter(filter);
-    //         chart.redrawGroup();
-    //       });
-    //     }, 5000);
-    // };
-    //
     var determineUniqueActors = function(data) {
       var concatenatedActors = [];
 
@@ -262,10 +190,6 @@
 
     var clearChart = function(chart, id) {
       chart.anchor(id).resetSvg();
-      // chart.addFilterHandler();
-      // chart.hasFilterHandler();
-      // chart.removeFilterHandler();
-      // chart.resetFilterHandler();
       chart.expireCache();
     };
 
@@ -676,14 +600,8 @@
       });
 
       dc.override(subwayChart, 'onClick', function(datum) {
-        // var filter = subwayChart.keyAccessor()(datum);
-        // dc.events.trigger(function() {
-        //   subwayChart.filter(filter);
-        //   subwayChart.redrawGroup();
-        // });
+        // Do nothing.
       });
-
-      // dc.override(subwayChart, 'onClick', onClickOverride);
 
       subwayChart.render();
 
@@ -718,6 +636,7 @@
         };
       }
       var filteredGroups = filterGroupsOnImportance(climaxSumPerGroup);
+      var ordinalGroupScale;
 
       //Set up the
       groupRowChart
@@ -742,9 +661,9 @@
       .colors(d3.scale.category20c())
       //Use a custom accessor
       .colorAccessor(function(d) {
-        var splitString = d.key.split(':');
-        var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
-        return valueApproximation;
+        // var splitString = d.key.split(':');
+        // var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
+        return d.key;
       })
 
       //Bind data
@@ -755,21 +674,30 @@
 
       //Order by key string (reverse, so we had to invent some shenanigans)
       //This is done explicitly to match the laneChart ordering.
-      .ordering(function(d) {
-        var splitString = d.key.split(':');
-        var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
-        return valueApproximation;
-      })
+      // .ordering(function(d) {
+        // var splitString = d.key.split(':');
+        // var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
+      //   return d.key;
+      // })
 
       //The x Axis
       .x(d3.scale.linear())
         .elasticX(true)
         .xAxis().tickValues([]);
 
+      // .y(ordinalGroupScale = d3.scale.ordinal().domain((function() {
+      //     //Because we use an ordinal scale here, we have to tell the chart
+      //     //which values to expect.
+      //     var domain = filteredGroups.all().map(function(d) {
+      //       //The group of this event
+      //       return (d.key);
+      //     });
+      //     return domain;
+      //   })()).copy());
+
       //Use a renderlet function to add the colored symbols to the legend (defined above)
       groupRowChart.on('renderlet', symbolRenderlet);
 
-      // dc.override(groupRowChart, 'onClick', onClickOverride);
       groupRowChart.render();
 
 
@@ -805,9 +733,9 @@
         .colors(groupRowChart.colors())
           //re-use the custom color accessor from the group chart
           .colorAccessor(function(d) {
-            var splitString = d.key[0].split(':');
-            var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
-            return valueApproximation;
+            // var splitString = d.key[0].split(':');
+            // var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
+            return d.key;
           });
 
         return subScatter;
@@ -973,7 +901,6 @@
         };
       }
       var filteredLaneClimaxGroup = filterOnGroupImportance(laneClimaxGroup);
-      var ordinalGroupScale;
 
       //Set up the
       customBubbleChart
@@ -1008,15 +935,16 @@
 
       //y Axis
       // .yAxisLabel('group')
-      .y(ordinalGroupScale = d3.scale.ordinal().domain((function() {
-          //Because we use an ordinal scale here, we have to tell the chart
-          //which values to expect.
-          var domain = filteredLaneClimaxGroup.all().map(function(d) {
-            //The group of this event
-            return (d.key[0]);
-          });
-          return domain;
-        })()).copy())
+      .y(ordinalGroupScale)
+        //  = d3.scale.ordinal().domain((function() {
+        //   //Because we use an ordinal scale here, we have to tell the chart
+        //   //which values to expect.
+        //   var domain = filteredLaneClimaxGroup.all().map(function(d) {
+        //     //The group of this event
+        //     return (d.key[0]);
+        //   });
+        //   return domain;
+        // })()).copy())
         .valueAccessor(function(p) {
           //The group of this event
           return p.key[0];

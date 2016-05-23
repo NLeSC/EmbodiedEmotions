@@ -1,7 +1,7 @@
 (function() {
   'use strict';
 
-  function BreadcrumbsController($scope, dc, Messagebus) {
+  function BreadcrumbsController($scope, Messagebus) {
     var me = this;
     me.charts = {};
     me.filters = [];
@@ -16,16 +16,7 @@
       Messagebus.publish('filterThis', {chart: me.charts[clickElement.chartID], filters:filter.filter});
     };
 
-    Messagebus.subscribe('filterThis', function(event, value) {
-      var chart = value.chart;
-      var filter = value.filters;
-      dc.events.trigger(function() {
-        chart.filter(filter);
-        chart.redrawGroup();
-      });
-    });
-
-    Messagebus.subscribe('clearFilters', function() {
+    Messagebus.subscribe('clearFilters', function(event) {
       me.charts = {};
       me.filters = [];
     });
@@ -53,6 +44,9 @@
           });
         });
       });
+
+      // console.log(dimension);
+      // console.log(filters);
     });
   }
 

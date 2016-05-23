@@ -8,7 +8,7 @@
    * @class
    * @memberOf core
    */
-  function DataService($http, $q, $log, $timeout, d3, uncertConf, Messagebus, toastr) {
+  function DataService($http, $q, $log, d3, uncertConf, Messagebus, toastr) {
     var me = this;
     this.data = {};
     var deferred = $q.defer();
@@ -28,6 +28,7 @@
      */
     this.load = function() {
       var dataType = uncertConf.DATA_JSON_URL.split(':')[0];
+      
 
       if (dataType === 'file') {
         var fileName = uncertConf.DATA_JSON_URL.split(':')[1];
@@ -37,19 +38,15 @@
           }
           me.data = json;
           deferred.resolve(me.data);
-
-          //Evil hacky timeout function to resolve a race condition.
-          $timeout(function() {
-            Messagebus.publish('data loaded', this.getData);
-          }.bind(this), 100);
-        }.bind(this));
+          Messagebus.publish('data loaded');
+        });
       } else if (dataType === 'http' || dataType === 'https') {
         me.data = $http.get(uncertConf.DATA_JSON_URL).success(this.onLoad).error(this.onLoadFailure);
       } else {
         console.log('Unknown data type.');
       }
       // return me.data;
-    }.bind(this);
+    };
 
     /**
      * Load data from server
@@ -63,16 +60,14 @@
     this.onUrlLoad = function(response) {
       me.data = response;
       toastr.success('New data loaded!');
-      Messagebus.publish('data loaded', this.getData);
-      // Messagebus.publish('new data loaded', this.getData);
-    }.bind(this);
+      Messagebus.publish('data loaded');
+    };
 
     this.onLoad = function(response) {
       me.data = response;
       deferred.resolve(response);
-      Messagebus.publish('data loaded', this.getData);
-      // Messagebus.publish('new data loaded', this.getData);
-    }.bind(this);
+      Messagebus.publish('data loaded');
+    };
 
     this.onLoadFailure = function() {
       $log.log('Failed to load data!!');
@@ -82,7 +77,7 @@
 
     this.getData = function () {
       return this.data;
-    }.bind(this);
+    };
 
     Messagebus.subscribe('data request', this.urlload);
   }

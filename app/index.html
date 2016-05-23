@@ -21,21 +21,15 @@
 </head>
 
 <body ng-app="uncertApp">
-  <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--4-col">
-      <div class="logo-vu"></div>
-    </div>
-    <div class="mdl-cell mdl-cell--4-col">
-      <div class="logo-nwr"></div>
-    </div>
-    <div class="mdl-cell mdl-cell--4-col">
-      <div class="logo-nlesc"></div>
-    </div>
-  </div>
+  <!-- <ul class="menu">
+    <li><a href="#/view1">view1</a></li>
+    <li><a href="#/view2">view2</a></li>
+  </ul>
 
-  <file-loading-directive></file-loading-directive>
-  <breadcrumbs-directive></breadcrumbs-directive>
-  <punchcard-directive></punchcard-directive>
+  <div ng-view></div> -->
+
+
+  <everything-directive></everything-directive>
 
   <!-- build:js(.) scripts/vendor.js -->
   <!-- bower:js -->
@@ -60,21 +54,67 @@
   <script src="scripts/app.js"></script>
   <script src="scripts/utils/messagebus.service.js"></script>
   <script src="scripts/core/constants.js"></script>
-  <script src="scripts/core/data.service.js"></script>
-  <script src="scripts/punchcard/dc.baseMixin.js"></script>
-  <script src="scripts/punchcard/dc.customCompositeChart.js"></script>
-  <script src="scripts/punchcard/dc.customSeriesChart.js"></script>
-  <script src="scripts/punchcard/dc.customScatterPlot.js"></script>
-  <script src="scripts/punchcard/dc.customBubbleMixin.js"></script>
-  <script src="scripts/punchcard/dc.customBubbleChart.js"></script>
-  <script src="scripts/punchcard/dc.subwayChart.js"></script>
-  <script src="scripts/punchcard/dc.laneChart.js"></script>
-  <script src="scripts/punchcard/punchcard.controller.js"></script>
-  <script src="scripts/punchcard/punchcard.directive.js"></script>
+  <script src="scripts/dcjs/dc.baseMixin.js"></script>
+  <script src="scripts/dcjs/dc.customCompositeChart.js"></script>
+  <script src="scripts/dcjs/dc.customSeriesChart.js"></script>
+  <script src="scripts/dcjs/dc.customScatterPlot.js"></script>
+  <script src="scripts/dcjs/dc.customBubbleMixin.js"></script>
+  <script src="scripts/dcjs/dc.customBubbleChart.js"></script>
+  <script src="scripts/dcjs/dc.subwayChart.js"></script>
+  <script src="scripts/dcjs/dc.laneChart.js"></script>
+  <script src="scripts/dcjs/dc.dyndomBubbleChart.js"></script>
+
+  <!-- <script src="views/view1/view1.js"></script>
+  <script src="views/view2/view2.config.js"></script>
+  <script src="views/view2/view2.controller.js"></script> -->
+
+  <script src="scripts/everything/everything.controller.js"></script>
+  <script src="scripts/everything/everything.directive.js"></script>
+
+  <!-- <script src="scripts/logoonly/logoonly.controller.js"></script>
+  <script src="scripts/logoonly/logoonly.directive.js"></script> -->
+
   <script src="scripts/fileloading/fileLoading.controller.js"></script>
   <script src="scripts/fileloading/fileLoading.directive.js"></script>
   <script src="scripts/breadcrumbs/breadcrumbs.controller.js"></script>
   <script src="scripts/breadcrumbs/breadcrumbs.directive.js"></script>
+
+  <script src="scripts/utils/helperFunctions.service.js"></script>
+  <script src="scripts/crossfilter/ndx.service.js"></script>
+
+  <script src="scripts/allactorchart/allActorChart.controller.js"></script>
+  <script src="scripts/allactorchart/allActorChart.directive.js"></script>
+  <script src="scripts/subwaychart/subwayChart.controller.js"></script>
+  <script src="scripts/subwaychart/subwayChart.directive.js"></script>
+  <script src="scripts/grouprowchart/groupRowChart.controller.js"></script>
+  <script src="scripts/grouprowchart/groupRowChart.directive.js"></script>
+  <script src="scripts/lanechart/laneChart.controller.js"></script>
+  <script src="scripts/lanechart/laneChart.directive.js"></script>
+  <script src="scripts/serieschart/seriesChart.controller.js"></script>
+  <script src="scripts/serieschart/seriesChart.directive.js"></script>
+  <script src="scripts/datatable/dataTable.controller.js"></script>
+  <script src="scripts/datatable/dataTable.directive.js"></script>
+
+  <script src="scripts/pollchart/pollChart.controller.js"></script>
+  <script src="scripts/pollchart/pollChart.directive.js"></script>
+
+  <script src="scripts/pollrowchart/pollRowChart.controller.js"></script>
+  <script src="scripts/pollrowchart/pollRowChart.directive.js"></script>
+  <script src="scripts/polllanechart/pollLaneChart.controller.js"></script>
+  <script src="scripts/polllanechart/pollLaneChart.directive.js"></script>
+
+  <script src="scripts/allcitationschart/allCitationsChart.controller.js"></script>
+  <script src="scripts/allcitationschart/allCitationsChart.directive.js"></script>
+
+  <script src="scripts/allauthorschart/allAuthorsChart.controller.js"></script>
+  <script src="scripts/allauthorschart/allAuthorsChart.directive.js"></script>
+
+  <script src="scripts/perspectivelanechart/perspectiveLaneChart.controller.js"></script>
+  <script src="scripts/perspectivelanechart/perspectiveLaneChart.directive.js"></script>
+  <script src="scripts/perspectivelanechart/optionSelector.controller.js"></script>
+  <script src="scripts/perspectivelanechart/optionSelector.directive.js"></script>
+
+  <script src="scripts/core/data.service.js"></script>
   <!-- endbuild -->
 </body>
 

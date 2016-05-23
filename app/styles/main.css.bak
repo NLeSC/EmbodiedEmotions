@@ -69,26 +69,6 @@ div.dc-chart {
     fill: white;
 }
 
-.dc-chart .bubble {
-    stroke: black;
-    stroke-width: 1px;
-}
-
-g.dyndom_node :hover {
-    fill-opacity: .8;
-    stroke: red !important;
-}
-
-g.dyndom_node {
-    stroke: black;
-    stroke-width: 1px;
-    stroke-opacity: 1;
-}
-
-.dc-chart .symbol {
-  stroke: black !important;
-}
-
 #subwayChart .bubble-text {
     color: red;
     font-size: 12px;
@@ -132,16 +112,16 @@ g.node.selected {
 }
 
 .logo-vu {
-  background-image: url("../images/VUlogo.png");
+  background-image: url("../images/vu_logo.png");
   height: 100px;
   width: 100%;
-  background-size: 60% auto;
+  background-size: 67% auto;
   background-repeat: no-repeat;
   background-position-x: 50px;
 }
 
 .logo-nwr {
-  background-image: url("../images/NWR_logo_1920x200.png");
+  background-image: url("../images/nwr_logo.png");
   height: 100px;
   width: 100%;
   background-size: 100% auto;
@@ -150,43 +130,10 @@ g.node.selected {
 }
 
 .logo-nlesc {
-  background-image: url("../images/NLESClogo.png");
+  background-image: url("../images/nlesc_logo.png");
   height: 100px;
   width: 100%;
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position-y: 40px;
-}
-
-.dc-data-table {
-    font-size: 10px;
-}
-
-table{
-    width: 200px;
-}
-
-th, td {
-  overflow: hidden;
-  white-space:nowrap;
-}
-
-.col_0 {
-  width: 35px;
-}
-
-.col_1 {
-  width: 125px;
-}
-
-.col_2 {
-    width: 200px;
-}
-
-.radio-parent {
-    display: flex;
-}
-
-.radio-child {
-    margin: auto;
 }
