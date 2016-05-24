@@ -31,12 +31,6 @@
 
         //Use the color scheme of the groupRowChart
         .colors(HelperFunctions.getGroupColors())
-          //re-use the custom color accessor from the group chart
-          .colorAccessor(function(d) {
-            // var splitString = d.key[0].split(':');
-            // var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
-            return d.key;
-          });
 
         return subScatter;
       };

@@ -88,8 +88,6 @@
       .colors(d3.scale.category20c())
       //Use a custom accessor
       .colorAccessor(function(d) {
-        // var splitString = d.key.split(':');
-        // var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
         return d.key;
       })
 
@@ -119,14 +117,6 @@
         return filters;
       }.bind(groupRowChart))
 
-      //Order by key string (reverse, so we had to invent some shenanigans)
-      //This is done explicitly to match the laneChart ordering.
-      .ordering(function(d) {
-        // var splitString = d.key.split(':');
-        // var valueApproximation = -(10000 * parseInt(splitString[0]) + 10 * splitString[1].charCodeAt(2) + splitString[1].charCodeAt(3));
-        return d.key;
-      })
-
       //The x Axis
       .x(d3.scale.linear())
         .elasticX(true)
@@ -135,9 +125,9 @@
       //Use a renderlet function to add the colored symbols to the legend (defined above)
       groupRowChart.on('renderlet', symbolRenderlet);
 
+      //Set the group colors in the helperfunctions so we can re-use this color scheme
       HelperFunctions.setGroupColors(groupRowChart.colors());
 
-      // dc.override(groupRowChart, 'onClick', onClickOverride);
       groupRowChart.render();
     };
 

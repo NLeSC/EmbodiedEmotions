@@ -34,7 +34,8 @@ dc.subwayChart = function (parent, chartGroup) {
     var _dashStyle;
     _chart.BUBBLE_CLASS = 'subwayBubble';
 
-    var linesColorScale;
+    // var linesColorScale;
+    var originalDomain;
 
     _chart.transitionDuration(750);
 
@@ -60,9 +61,10 @@ dc.subwayChart = function (parent, chartGroup) {
         return _chart;
     };
 
-    function Station(x, yRaw, visible) {
+    function Station(x, yRaw, value, visible) {
       this.x = x;
       this.yRaw = yRaw;
+      this.value = value;
       this.visible = visible;
     }
 
@@ -151,8 +153,9 @@ dc.subwayChart = function (parent, chartGroup) {
         if (node.value.count > 0) {
           var time = node.key[0];
           var participants = _chart.valueAccessor()(node);
+          var value = _chart.radiusValueAccessor()(node);
 
-          insertStation(new Station(new Date(time), participants, true), nodes);
+          insertStation(new Station(new Date(time), participants, value, true), nodes);
         }
       });
 
@@ -167,9 +170,9 @@ dc.subwayChart = function (parent, chartGroup) {
           linesObj[lineName] = new SubwayLine(lineName, {});
         }
         //Insert a start point station into the line
-        insertStation(new Station(new Date(-8640000000000000), [lineName], true), linesObj[lineName].stations);
+        insertStation(new Station(new Date(-8640000000000000), [lineName], 1, true), linesObj[lineName].stations);
         //Insert an end point station into the line
-        insertStation(new Station(new Date(8640000000000000), [lineName], true), linesObj[lineName].stations);
+        insertStation(new Station(new Date(8640000000000000), [lineName], 1, true), linesObj[lineName].stations);
       });
 
       //Then we add the stations to those lines based on the nodes
@@ -191,8 +194,28 @@ dc.subwayChart = function (parent, chartGroup) {
       return lines;
     };
 
+    var stationCompare = function(thisStation, thatStation) {
+      var result = true;
+      if(thisStation.x.getTime() !== thatStation.x.getTime()) {
+        result = false;
+      }
+      if(thisStation.yRaw !== thatStation.yRaw) {
+        result = false;
+      }
+      if(thisStation.value !== thatStation.value) {
+        result = false;
+      }
+      return result;
+    }
+
     var updateLines = function(lines, domain, nodes) {
+      this.visibleStations = [];
+
       this.visibleTimeStrings = Object.keys(nodes);
+      this.visibleTimeStrings.forEach(function(time) {
+        this.visibleStations = this.visibleStations.concat(nodes[time]);
+      });
+
       this.visibleTimeStrings.push(new Date(8640000000000000).toString());
       this.visibleTimeStrings.push(new Date(-8640000000000000).toString());
       this.visibleDomain = domain;
@@ -201,7 +224,8 @@ dc.subwayChart = function (parent, chartGroup) {
         var stations = line.stations;
         var dateStrings = Object.keys(stations);
 
-        dateStrings.forEach(function(dateString){
+        dateStrings.forEach(function(dateString) {
+          this.currentDate = dateString;
           var stationList = stations[dateString];
 
           Object.keys(stationList).forEach(function(stationKey) {
@@ -214,7 +238,16 @@ dc.subwayChart = function (parent, chartGroup) {
             }.bind(this));
 
             //If any of the participants are visible, this node should be visible.
-            if (anyParticipantVisible && this.visibleTimeStrings.indexOf(dateString) >= 0) {
+            var found = false;
+            this.visibleStations.forEach(function(thatStation) {
+              if (stationCompare(thatStation, station)) {
+                found = true;
+              }
+            });
+
+            if (found) {
+              station.visible = true;
+            } else if (anyParticipantVisible && this.currentDate === new Date(8640000000000000).toString() || this.currentDate === new Date(-8640000000000000).toString()) {
               station.visible = true;
             } else {
               station.visible = false;
@@ -319,7 +352,8 @@ dc.subwayChart = function (parent, chartGroup) {
     function renderLines(subwayLineG) {
       subwayLineG.enter().insert('g', ':first-child')
         .attr('stroke', function(d) {
-          return linesColorScale(d.lineID);
+          return _chart.getColor(d.lineID);
+          // return linesColorScale(d.lineID);
         })
         .attr('class', function (d, i) {
           return 'subway-line ' + '_' + i;
@@ -332,29 +366,6 @@ dc.subwayChart = function (parent, chartGroup) {
       paths.enter()
         .insert('path')
         .attr('class', 'diagonal')
-        .attr('d', function (d) {
-          var origin = {x: getX(d.source.x), y: getY(d.source.yRaw)};
-          var dest;
-          var currentSegment;
-          if (d.source.visible && d.target.visible) {
-            origin = {x: getX(d.source.x), y: getY(d.source.yRaw)};
-            dest = {x: getX(d.target.x), y: getY(d.target.yRaw)};
-
-            return safeD(diagonal({source: origin, target: dest}));
-
-          } else if (d.source.visible && !d.target.visible) {
-            origin = {x: getX(d.source.x), y: getY(d.source.yRaw)};
-
-            currentSegment = d.nextSegment;
-            while (currentSegment !== undefined) {
-              if (currentSegment.target.visible) {
-                dest = {x: getX(currentSegment.target.x), y: getY(currentSegment.target.yRaw)};
-            		return safeD(diagonal({source: origin, target: dest}));
-              }
-              currentSegment = currentSegment.nextSegment;
-            }
-          }
-        })
         .attr('stroke-opacity', function (d) {
           return 1.0;
         });
@@ -415,19 +426,12 @@ dc.subwayChart = function (parent, chartGroup) {
     _chart.plotData = function () {
       var prunedData = pruneData(_chart.data());
 
-      // if (linesData === undefined) {
-      //   linesData = preprocessDataForLines(_chart.data());
-      // } else {
-      //   linesData = updateLineData(_chart.data());
-      // }
-
       var nodes = determineNodes(prunedData);
       var domain = fiddleWithDomain(nodes);
       _chart.y().domain(domain);
 
       //Make the lines if this is the first pass
       if (!initialized) {
-        linesColorScale = d3.scale.category20b().domain(domain);
         lines = createLines(domain, nodes);
         lines = updateLines(lines, domain, nodes);
         lines = buildSegments(lines, domain);
@@ -437,10 +441,6 @@ dc.subwayChart = function (parent, chartGroup) {
         //Update the lines by determining if the nodes are in the scope and making them (in)visible, and updating x and y values of the nodes.
         updateLines(lines, domain, nodes);
       }
-
-      // var linesData = Object.keys(lines).map(function (key) {
-      //   return lines[key];
-      // });
 
       var subwayLineG = _chart.chartBodyG().selectAll('g.' + 'subway-line').data(lines);
       renderLines(subwayLineG);
@@ -515,7 +515,9 @@ dc.subwayChart = function (parent, chartGroup) {
                 return _chart.BUBBLE_CLASS + ' _' + i;
             })
             .on('click', _chart.onClick)
-            .attr('fill', _chart.getColor)
+            // .attr('fill', function(d) {
+            //   return _chart.getColor(d.lineID)
+            // })
             .attr('width', 0)
             .attr('height', 0);
         dc.transition(bubbleG, _chart.transitionDuration())
@@ -539,7 +541,9 @@ dc.subwayChart = function (parent, chartGroup) {
         dc.transition(bubbleG, _chart.transitionDuration())
           .attr('transform', bubbleLocator)
           .selectAll('ellipse.' + _chart.BUBBLE_CLASS)
-          .attr('fill', _chart.getColor)
+          // .attr('fill', function(d) {
+          //   return _chart.getColor(d.lineID)
+          // })
           .attr('ry', function (d) {
               return _chart.bubbleR(d);
           })

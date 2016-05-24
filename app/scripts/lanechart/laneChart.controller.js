@@ -151,10 +151,10 @@
       // .xAxisLabel('time')
       .x(d3.time.scale())
         .elasticX(true)
-        .xAxisPadding(100)
+        .xAxisPadding(2000)
         .keyAccessor(function(p) {
           //The time of this event
-          return p.key[1];
+          return p.key[2];
         })
 
       //y Axis
@@ -166,7 +166,7 @@
             //The group of this event
             return (d.key[0]);
           });
-          return domain;
+          return domain.reverse();
         })()).copy())
         .valueAccessor(function(p) {
           //The group of this event

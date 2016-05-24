@@ -151,7 +151,7 @@
       //x Axis
       .x(d3.time.scale())
         .elasticX(true)
-        .xAxisPadding(100)
+        .xAxisPadding(2000)
         .keyAccessor(function(p) {
           //The time of this event
           return p.key[0];
@@ -180,7 +180,11 @@
         .minRadius(5)
         .maxBubbleRelativeSize(0.015)
 
-      .colors(d3.scale.category20b().domain(uniqueActors))
+      //Use the color scheme of the groupRowChart
+      .colors(HelperFunctions.getActorColors())
+      .colorAccessor(function(d) {
+        return d;
+      })
 
       //Labels printed just above the bubbles
       .renderLabel(true)
@@ -259,21 +263,25 @@
         this.y().rangeBands([this.yAxisHeight(), 0], 0, 1);
       });
 
-      dc.override(subwayChart, 'fadeDeselectedArea', function() {
-        if (subwayChart.hasFilter()) {
-          subwayChart.selectAll('g.' + subwayChart.BUBBLE_NODE_CLASS).each(function(d) {
-            if (subwayChart.isSelectedNode(d)) {
-              subwayChart.highlightSelected(this);
-            } else {
-              subwayChart.fadeDeselected(this);
-            }
-          });
-        } else {
-          subwayChart.selectAll('g.' + subwayChart.BUBBLE_NODE_CLASS).each(function() {
-            subwayChart.resetHighlight(this);
-          });
-        }
+      dc.override(subwayChart, 'getColor', function(d) {
+        return HelperFunctions.getActorColors()(d);
       });
+
+      // dc.override(subwayChart, 'fadeDeselectedArea', function() {
+      //   if (subwayChart.hasFilter()) {
+      //     subwayChart.selectAll('g.' + subwayChart.BUBBLE_NODE_CLASS).each(function(d) {
+      //       if (subwayChart.isSelectedNode(d)) {
+      //         subwayChart.highlightSelected(this);
+      //       } else {
+      //         subwayChart.fadeDeselected(this);
+      //       }
+      //     });
+      //   } else {
+      //     subwayChart.selectAll('g.' + subwayChart.BUBBLE_NODE_CLASS).each(function() {
+      //       subwayChart.resetHighlight(this);
+      //     });
+      //   }
+      // });
 
       //Disable the onClick handler for this chart
       dc.override(subwayChart, 'onClick', function() {
