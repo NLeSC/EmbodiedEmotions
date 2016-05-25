@@ -32,7 +32,7 @@
       });
       var html = '';
       result.forEach(function(phrase) {
-        html += phrase.source + '</br>';
+        html = phrase.source + '</br>';
       });
       return html;
     };

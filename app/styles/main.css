@@ -159,7 +159,7 @@ g.node.selected {
 }
 
 .dc-data-table {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 table{
@@ -172,15 +172,23 @@ th, td {
 }
 
 .col_0 {
-  width: 35px;
+  width: 50px;
 }
 
 .col_1 {
-  width: 125px;
+  width: 200px;
 }
 
 .col_2 {
-    width: 200px;
+    width: 50px;
+}
+
+.col_3 {
+  width: 100px;
+}
+
+.col_4 {
+    width: 600px;
 }
 
 .radio-parent {
