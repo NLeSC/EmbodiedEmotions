@@ -64,6 +64,7 @@
       // .xAxisLabel('time')
       .x(d3.time.scale())
         .elasticX(true)
+        .xAxisPadding(2000)
         .keyAccessor(function(d) {
           //Tell dc how to access the data for the time
           return d.key[1];

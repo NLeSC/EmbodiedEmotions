@@ -184,10 +184,14 @@ th, td {
 }
 
 .col_3 {
-  width: 100px;
+    width: 50px;
 }
 
 .col_4 {
+  width: 100px;
+}
+
+.col_5 {
     width: 600px;
 }
 

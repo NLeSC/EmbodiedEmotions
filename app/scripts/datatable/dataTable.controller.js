@@ -37,6 +37,19 @@
       return html;
     };
 
+    var mentionCharToHtml = function(d, sources) {
+      var result = [];
+      var raw = d.mentions;
+      var html = '';
+      raw.forEach(function(mention) {
+        var charStart = parseInt(mention.char[0]);
+        var charEnd = parseInt(mention.char[1]);
+
+        html += charStart + ' - ' + charEnd + '</br>';
+      });
+      return html;
+    };
+
     var mentionToHtml = function(d, sources) {
       var result = [];
       var raw = d.mentions;
@@ -62,9 +75,9 @@
       });
       var html = '';
       result.forEach(function(phrase) {
-        var pre = phrase.text.substring(phrase.charStart - 30, phrase.charStart);
+        var pre = phrase.text.substring(phrase.charStart - 60, phrase.charStart);
         var word = phrase.text.substring(phrase.charStart, phrase.charEnd);
-        var post = phrase.text.substring(phrase.charEnd, phrase.charEnd + 30);
+        var post = phrase.text.substring(phrase.charEnd, phrase.charEnd + 60);
 
         html += pre + '<span class=\'highlighted-mention\'>' + word + '</span>' + post + '</br>';
       });
@@ -132,12 +145,17 @@
             return '<div class=col_1>' + sourceToHtml(d) + '</div>';
           }
         }, {
-          label: '<div class=col_2>Emotion</div>',
+          label: '<div class=col_2>Char Offset</div>',
+          format: function(d) {
+            return '<div class=col_2>' + mentionCharToHtml(d) + '</div>';
+          }
+        }, {
+          label: '<div class=col_3>Emotion</div>',
           format: function(d) {
             return d.groupName;
           }
         }, {
-          label: '<div class=col_3>Body Parts</div>',
+          label: '<div class=col_4>Body Parts</div>',
           format: function(d) {
             var result = '';
             Object.keys(d.actors).forEach(function(key) {
@@ -146,9 +164,9 @@
             return '<div class=col_4>' + result + '</div>';
           }
         }, {
-          label: '<div class=col_4>Mentions</div>',
+          label: '<div class=col_5>Mentions</div>',
           format: function(d) {
-            return '<div class=col_4>' + mentionToHtml(d, sources) + '</div>';
+            return '<div class=col_5>' + mentionToHtml(d, sources) + '</div>';
           }
         // }
         // , {
