@@ -49,13 +49,12 @@
 
     this.initializeChart = function() {
       var subwayChart = dc.subwayChart('#'+$element[0].children[0].attributes.id.value);
-      var uniqueActors;
 
       //The dimension for the subwayChart. We use time for x and group for y,
       //and bin everything in the same group number and day.
       var subwayDimension = NdxService.buildDimension(function(d) {
         var time = d3.time.format('%Y%m%d').parse(d.time);
-        uniqueActors = HelperFunctions.determineUniqueActors(d);
+        var uniqueActors = HelperFunctions.determineUniqueActors(d);
 
         return [time, uniqueActors];
       });
@@ -118,7 +117,7 @@
         }
       );
 
-      // var uniqueActors = [];
+      var uniqueActors = HelperFunctions.getUniqueActors();
       // subwayGroup.all().map(function(d) {
       //   d.key[1].forEach(function(key) {
       //     if (uniqueActors.indexOf(key) < 0) {
