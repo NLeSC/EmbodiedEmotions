@@ -10,6 +10,12 @@
   </div>
 </div>
 
+<full-text-crossfilter-search-directive
+  chart-header="Search for keywords"
+  ndx-service-name="software"
+  json-fields="actors.actor:, mentions.perspective.source, mentions.snippet, prefLabel, labels">
+</full-text-crossfilter-search-directive>
+
 <!-- <div ng-click="everything.changeView('logos')"> logo's only </div> -->
 
 <file-loading-directive></file-loading-directive>

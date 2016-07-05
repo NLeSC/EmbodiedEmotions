@@ -1,10 +1,14 @@
 (function() {
   'use strict';
 
-  function NdxService(crossfilter, Messagebus) {
+  function NdxService($q, crossfilter, Messagebus) {
     this.data = {};
     this.dimensions = [];
     this.pollDimensions = [];
+
+    var deferred = $q.defer();
+
+    this.ready = deferred.promise;
 
     this.getData = function() {
       return this.data;
@@ -21,6 +25,7 @@
       // this.ndxPolls = crossfilter(data.timeline.polls);
 
       Messagebus.publish('crossfilter ready', this.getData);
+      deferred.resolve();
     };
 
     this.pollDimension = function(keyAccessor) {

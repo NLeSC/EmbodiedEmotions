@@ -73,7 +73,7 @@ module.exports = function(grunt) {
       options: {
         port: 9000,
         // Change this to '0.0.0.0' to access the server from outside.
-        hostname: '0.0.0.0',
+        hostname: '127.0.0.1',
         livereload: 35729
       },
       livereload: {
@@ -264,24 +264,13 @@ module.exports = function(grunt) {
 
     imagemin: {
       dist: {
-        files: {
-          'dist/images/nlesc_logo.png': 'app/images/nlesc_logo.png', // 'destination': 'source'
-          'dist/images/nwr_logo.png': 'app/images/nwr_logo.png',
-          'dist/images/vu_logo.png': 'app/images/vu_logo.png'
-        }
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.app %>/images',
+          src: '{,*/}*.{png,jpg,jpeg,gif}',
+          dest: '<%= yeoman.dist %>/images'
+        }]
       }
-      // ,
-      // dist: {
-      //  options: {
-      //     optimizationLevel: 3
-      //   },
-      //   files: [{
-      //     expand: true,
-      //     cwd: 'app/images',
-      //     src: '[**/*.{png,jpg,jpeg,gif,svg}]',
-      //     dest: '<%= yeoman.dist %>/images'
-      //   }]
-      // }
     },
 
     svgmin: {
