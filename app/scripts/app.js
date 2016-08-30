@@ -38,6 +38,7 @@
       'uncertApp.everything',
       'uncertApp.logoonly',
 
+      'uncertApp.appFilereader',
       'uncertApp.fileLoading',
       'uncertApp.breadcrumbs',
       'uncertApp.allactorchart',

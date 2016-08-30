@@ -21,6 +21,21 @@
      */
     this.ready = deferred.promise;
 
+    this.doLoad = function(fileName) {
+      d3.json(fileName, function(error, json) {
+        if (error) {
+          return console.warn(error);
+        }
+        me.data = json;
+        deferred.resolve(me.data);
+
+        //Evil hacky timeout function to resolve a race condition.
+        $timeout(function() {
+          Messagebus.publish('data loaded', this.getData);
+        }.bind(this), 100);
+      }.bind(this));
+    };
+
     /**
      * Load data from server
      *
@@ -31,18 +46,7 @@
 
       if (dataType === 'file') {
         var fileName = uncertConf.DATA_JSON_URL.split(':')[1];
-        d3.json(fileName, function(error, json) {
-          if (error) {
-            return console.warn(error);
-          }
-          me.data = json;
-          deferred.resolve(me.data);
-
-          //Evil hacky timeout function to resolve a race condition.
-          $timeout(function() {
-            Messagebus.publish('data loaded', this.getData);
-          }.bind(this), 100);
-        }.bind(this));
+        this.doLoad(fileName);
       } else if (dataType === 'http' || dataType === 'https') {
         me.data = $http.get(uncertConf.DATA_JSON_URL).success(this.onLoad).error(this.onLoadFailure);
       } else {
@@ -51,13 +55,13 @@
       // return me.data;
     }.bind(this);
 
-    /**
+        /**
      * Load data from server
      *
      * @returns {Promise}
      */
     this.urlload = function(request) {
-      $http.get(request.targetScope.fc.query).success(this.onUrlLoad).error(this.onLoadFailure);
+      $http.get(request.targetScope.fc.fileName).success(this.onUrlLoad).error(this.onLoadFailure);
     }.bind(this);
 
     this.onUrlLoad = function(response) {
@@ -83,6 +87,10 @@
     this.getData = function () {
       return this.data;
     }.bind(this);
+
+    this.getFileList = function() {
+      return uncertConf.BODY_PARTS;
+    };
 
     Messagebus.subscribe('data request', this.urlload);
   }

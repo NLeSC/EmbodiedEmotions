@@ -3,7 +3,9 @@
 
   function FileController(DataService, uncertConf, Messagebus) {
     var me = this;
+    this.fileName = uncertConf.DATA_JSON_URL;
     this.query = uncertConf.DATA_JSON_URL;
+    this.list = DataService.getFileList();
 
     this.clear = function() {
       me.query = uncertConf.DATA_JSON_URL;
@@ -29,6 +31,22 @@
       if ($event.keyCode === enterCode) {
         me.open();
       }
+    };
+
+    this.selectData = function(fileName) {
+      this.fileName = fileName;
+    }
+
+    this.openServerFile = function(fileName) {
+      DataService.ready.then(function() {
+        Messagebus.publish('data request', this.fileName);
+        // toastr.error('Search' + me.query);
+      }.bind(this));
+      // DataService.load(fileName);
+    };
+
+    this.readFile = function(file) {
+      DataService.doLoad(file);
     };
   }
 

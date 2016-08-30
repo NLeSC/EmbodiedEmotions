@@ -49,8 +49,9 @@
         d.filter(null);
         d.dispose();
       });
-      this.ndx.remove();
-      this.ndxPolls.remove();
+      if (this.ndx) {
+        this.ndx.remove();
+      }
       Messagebus.publish('clearFilters');
     };
 

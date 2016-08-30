@@ -10,5 +10,5 @@
     };
   }
 
-  angular.module('uncertApp.fileLoading').directive('fileLoadingDirective', fileLoadingDirective);
+  angular.module('uncertApp.fileLoading').directive('fileLoadingDirective', fileLoadingDirective);  
 })();

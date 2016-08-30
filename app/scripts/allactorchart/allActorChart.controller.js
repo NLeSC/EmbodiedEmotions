@@ -6,15 +6,30 @@
       //A rowChart that shows us the importance of the all actors
       var allActorChart = dc.rowChart('#'+$element[0].children[0].attributes.id.value);
 
-      var uniqueActors;
+      var allActors = [];
 
       //Dimension of the list of unique actors present in each event.
       var allActorsDimension = NdxService.buildDimension(function(d) {
-        uniqueActors = HelperFunctions.determineUniqueActors(d);
-        return uniqueActors;
+        var actors = HelperFunctions.determineUniqueActors(d);
+        allActors = allActors.concat(actors)
+        return actors;
       });
 
+      //Helper function to get unique elements of an array
+      var arrayUnique = function(a) {
+        return a.reduce(function(p, c) {
+          if (p.indexOf(c) < 0) {
+            p.push(c);
+          }
+          return p;
+        }, []);
+      };
+
+      var uniqueActors = arrayUnique(allActors);
+
       HelperFunctions.setUniqueActors(uniqueActors);
+
+      console.log(uniqueActors);
 
       //Custom reduce functions to split events up with multiple keys
       function reduceAdd(p, v) {

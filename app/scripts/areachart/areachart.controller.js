@@ -2,7 +2,7 @@
   'use strict';
 
   function AreachartController($element, d3, dc, colorbrewer, NdxService, HelperFunctions, Messagebus) {
-    var bodyparts = ['lips', 'breath', 'shoulder', 'snot', 'horns', 'stomach', 'feet'];
+    var bodyparts = [];
 
     this.initializeChart = function() {
       var stackedAreaChart = dc.lineChart('#' + $element[0].children[0].attributes.id.value);
@@ -72,7 +72,11 @@
       function sel_stack(actor) {
         return function(d) {
           if (d.value[actor] !== undefined) {
-            return d.value[actor];
+            var total = 0;
+            Object.keys(d.value).forEach(function(a) {
+              total += d.value[a]
+            });
+            return d.value[actor] / total;
           } else {
             return 0;
           }
@@ -105,7 +109,7 @@
       .renderDataPoints(true)
       .renderHorizontalGridLines(true)
 
-      .legend(dc.legend().x(10).y(10).itemHeight(13).gap(5))
+      .legend(dc.legend().x(10).y(10).itemHeight(6).gap(1))
       .brushOn(false)
 
       .group(actorsGroup, uniqueActors[0], sel_stack(uniqueActors[0]))
