@@ -12,6 +12,17 @@
       }, []);
     };
 
+    var splitAndConcatActor = function(concatList, actor) {
+      var splitString = actor.split(':');
+      if (splitString.length > 1) {
+        var category = splitString[0];
+        var entity = splitString[1];
+        concatList.push(category + ':' + entity);
+      } else {
+        concatList.push(splitString[0]);
+      }
+    }
+
     this.determineUniqueActors = function(data) {
       var concatenatedActors = [];
 
@@ -21,20 +32,13 @@
       } else {
         keys.forEach(function(key) {
           var keysActors = data.actors[key];
-          keysActors.forEach(function(keysActor) {
-            var splitString = keysActor.split(':');
-            if (splitString.length > 1) {
-              var category = splitString[0];
-              var entity = splitString[1];
-              if (category === 'nwr-non-entities' || category === 'ne') {
-                // concatenatedActors.push(category);
-              } else {
-                concatenatedActors.push(category + ':' + entity);
-              }
-            } else {
-              concatenatedActors.push(splitString[0]);
-            }
-          });
+          if (Array.isArray(keysActors)) {
+            keysActors.forEach(function(keysActor) {
+              splitAndConcatActor(concatenatedActors, keysActor)
+            });
+          } else {
+            splitAndConcatActor(concatenatedActors, keysActors)
+          }          
         });
       }
       var uniqueActors = arrayUnique(concatenatedActors);

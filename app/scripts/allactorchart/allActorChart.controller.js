@@ -39,9 +39,13 @@
         // } else {
           keys.forEach(function(key) {
             var actors = v.actors[key];
-            actors.forEach(function(actor) {
-              p[actor] = (p[actor] || 0) + 1;
-            });
+            if (Array.isArray(actors)) {
+              actors.forEach(function(actor) {
+                p[actor] = (p[actor] || 0) + 1;
+              });
+            } else {
+              p[actors] = (p[actors] || 0) + 1;
+            }
           });
         // }
         return p;
@@ -54,9 +58,13 @@
         // } else {
           keys.forEach(function(key) {
             var actors = v.actors[key];
-            actors.forEach(function(actor) {
-              p[actor] = (p[actor] || 0) - 1;
-            });
+            if (Array.isArray(actors)) {
+              actors.forEach(function(actor) {
+                p[actor] = (p[actor] || 0) - 1;
+              });
+            } else {
+              p[actors] = (p[actors] || 0) - 1;
+            }
           });
         // }
         return p;

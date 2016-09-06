@@ -23,7 +23,7 @@
       // DATA_JSON_URL: 'file:data/contextual.timeline04-02.json'
       // DATA_JSON_URL: 'https://raw.githubusercontent.com/NLeSC/UncertaintyVisualization/gh-pages/data/contextual.timeline04-02.json',
       // DATA_JSON_URL: 'https://raw.githubusercontent.com/NLeSC/UncertaintyVisualization/narratives/app/data/embodied_0202.json',
-      DATA_JSON_URL: 'file:data/predicted/love.json',
+      DATA_JSON_URL: 'file:data/7-9-2016.json',
       BODY_PARTS: ["bile", "blood", "breast", "eyes", "hair", "hands", "heart", "mind", "soul", "sweat", "tears", "tongue", "veins", "cheeks", "head", "body", "breath", "face", "mouth", "senses", "womb", "arms", "jaws", "lips", "spirit", "tooth", "varia", "wound", "knees", "voice", "conscience", "limbs", "neck", "ears", "throat", "legs", "intestines", "bones", "wrists", "none", "stomach", "shoulder", "feet"]
     });
 })();

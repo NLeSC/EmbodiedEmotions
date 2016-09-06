@@ -26,10 +26,16 @@
           var keys = Object.keys(v.actors);
           keys.forEach(function(key) {
             var keysActors = v.actors[key];
-            keysActors.forEach(function(keysActor) {
-              var actorLabel = key + ' : ' + keysActor;
+
+            if (Array.isArray(keysActors)) {
+              keysActors.forEach(function(keysActor) {
+                var actorLabel = key + ' : ' + keysActor;
+                p.actors[actorLabel] = (p.actors[actorLabel] || 0) + v.climax;
+              });
+            } else {
+              var actorLabel = key + ' : ' + keysActors;
               p.actors[actorLabel] = (p.actors[actorLabel] || 0) + v.climax;
-            });
+            }
           });
 
           //Sum event values over all events fitting this time and group.
@@ -54,10 +60,16 @@
           var keys = Object.keys(v.actors);
           keys.forEach(function(key) {
             var keysActors = v.actors[key];
-            keysActors.forEach(function(keysActor) {
-              var actorLabel = key + ' : ' + keysActor;
+
+            if (Array.isArray(keysActors)) {
+              keysActors.forEach(function(keysActor) {
+                var actorLabel = key + ' : ' + keysActor;
+                p.actors[actorLabel] = (p.actors[actorLabel] || 0) - v.climax;
+              });
+            } else {
+              var actorLabel = key + ' : ' + keysActors;
               p.actors[actorLabel] = (p.actors[actorLabel] || 0) - v.climax;
-            });
+            }
           });
 
           p.events[v.event] = (p.events[v.event] || 0) - v.climax;
