@@ -89,7 +89,7 @@
 
       //These parameters should make for fairly unique events
       var idDimension = NdxService.buildDimension(function(d) {
-        return [d.instance];
+        return [d.event];
       });
 
       // use odd page size to show the effect better
@@ -129,7 +129,7 @@
         .showGroups(false)
         .size(Infinity)
         .sortBy(function(d) {
-          return d.time;
+          return d3.time.format('%Y%m%d').parse(d.time);
         })
         .order(d3.ascending)
         .columns([
@@ -137,7 +137,7 @@
           label: '<div class=col_0>Year</div>',
           format: function(d) {
             var time = d3.time.format('%Y%m%d').parse(d.time);
-            return '<div class=col_0>' + time.getFullYear() + '</div>';
+            return '<div class=col_0>' + time.getDate() + '/' + (time.getMonth()+1) + '/' + time.getFullYear() + '</div>';
           }
         }, {
           label: '<div class=col_1>Source</div>',

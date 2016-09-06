@@ -125,6 +125,7 @@
 
       //The x Axis
       .x(d3.scale.linear())
+
       .data(function(d) {
         return d.top(20);
       })

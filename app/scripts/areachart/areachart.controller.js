@@ -14,7 +14,7 @@
       //and bin everything in the same group number and day.
       var timeDimension = NdxService.buildDimension(function(d) {
         var time = d3.time.format('%Y%m%d').parse(d.time);
-        uniqueActors = HelperFunctions.determineUniqueActors(d);
+        // uniqueActors = HelperFunctions.determineUniqueActors(d);
 
         if (timeMin && timeMax) {
           if (time < timeMin) {
@@ -33,17 +33,31 @@
 
       var actorsGroup = timeDimension.group().reduce(
         function(p, v) {
-          var actors = Object.keys(v.actors);
-          actors.forEach(function(actor) {
-            p[actor] = (p[actor] || 0) + v.climax;
+          var keys = Object.keys(v.actors);
+          keys.forEach(function(key) {
+            var actors = v.actors[key];
+            if (Array.isArray(actors)) {
+              actors.forEach(function(actor) {
+                p[actor] = (p[actor] || 0) + 1;
+              });
+            } else {
+              p[actors] = (p[actors] || 0) + 1;
+            }
           });
 
           return p;
         },
         function(p, v) {
-          var actors = Object.keys(v.actors);
-          actors.forEach(function(actor) {
-            p[actor] = (p[actor] || 0) - v.climax;
+          var keys = Object.keys(v.actors);
+          keys.forEach(function(key) {
+            var actors = v.actors[key];
+            if (Array.isArray(actors)) {
+              actors.forEach(function(actor) {
+                p[actor] = (p[actor] || 0) - 1;
+              });
+            } else {
+              p[actors] = (p[actors] || 0) - 1;
+            }
           });
 
           return p;
@@ -54,8 +68,15 @@
       );
 
       var concatenatedActors = [];//HelperFunctions.getUniqueActors();
+      var totals = {};
       actorsGroup.all().map(function(d) {
-        concatenatedActors = concatenatedActors.concat(Object.keys(d.value));
+        var keys = Object.keys(d.value);
+        totals[d.key] = 0;
+        keys.forEach(function(k) {
+          totals[d.key] += d.value[k];
+        });
+
+        concatenatedActors = concatenatedActors.concat(keys);
       });
 
       //Helper function to get unique elements of an array
@@ -69,13 +90,10 @@
       };
       var uniqueActors = arrayUnique(concatenatedActors);
 
-      function sel_stack(actor) {
+      function selectStack(actor) {
         return function(d) {
           if (d.value[actor] !== undefined) {
-            var total = 0;
-            Object.keys(d.value).forEach(function(a) {
-              total += d.value[a]
-            });
+            var total = totals[d.key];
             return d.value[actor] / total;
           } else {
             return 0;
@@ -86,15 +104,16 @@
       //Set up the
       stackedAreaChart
       .renderArea(true)
+      .interpolate('step-before')
 
       //Sizes in pixels
       .width(parseInt($element[0].getClientRects()[1].width, 10))
-      .height(300)
+      .height(400)
       .margins({
         top: 10,
         right: 0,
         bottom: 20,
-        left: 0
+        left: 300
       })
       //The time this chart takes to do its animations.
       .transitionDuration(1500)
@@ -102,17 +121,18 @@
       //Bind data
       .dimension(timeDimension)
 
-      .x(d3.time.scale().domain([timeMin, timeMax]))
-      // .y(d3.scale.linear().domain([0,50]))
-      .elasticY(true)
+      .x(d3.time.scale().domain([d3.time.year.offset(timeMin, -5), d3.time.year.offset(timeMax, 5)]))
+      .xAxisPadding(2000)
+      .y(d3.scale.linear().domain([0,1]))
+      .elasticY(false)
 
-      .renderDataPoints(true)
+      .renderDataPoints(false)
       .renderHorizontalGridLines(true)
 
       .legend(dc.legend().x(10).y(10).itemHeight(6).gap(1))
       .brushOn(false)
 
-      .group(actorsGroup, uniqueActors[0], sel_stack(uniqueActors[0]))
+      .group(actorsGroup, uniqueActors[0], selectStack(uniqueActors[0]))
       // .valueAccessor(function(d) {
       //   return d.value.value;
       // })
@@ -126,7 +146,7 @@
       .colors(d3.scale.ordinal().range(HelperFunctions.getOrdinalColors()))
 
       for(var i = 1; i<uniqueActors.length; ++i) {
-        stackedAreaChart.stack(actorsGroup, uniqueActors[i], sel_stack(uniqueActors[i]));
+        stackedAreaChart.stack(actorsGroup, uniqueActors[i], selectStack(uniqueActors[i]));
       }
 
       // dc.override(stackedAreaChart, 'onClick', onClickOverride);
@@ -145,14 +165,13 @@
           });
         }
 
-
         if (minDate && maxDate) {
-          stackedAreaChart.x(d3.time.scale().domain([minDate, maxDate]));
+          stackedAreaChart.x(d3.time.scale().domain([d3.time.year.offset(minDate, -5), d3.time.year.offset(maxDate, 5)]))
         } else {
-          stackedAreaChart.x(d3.time.scale().domain([timeMin, timeMax]));
+          stackedAreaChart.x(d3.time.scale().domain([d3.time.year.offset(timeMin, -5), d3.time.year.offset(timeMax, 5)]))
         }
 
-        stackedAreaChart.render();
+        stackedAreaChart.redraw();
       });
     };
 
