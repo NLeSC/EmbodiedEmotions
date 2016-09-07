@@ -29,8 +29,6 @@
 
       HelperFunctions.setUniqueActors(uniqueActors);
 
-      console.log(uniqueActors);
-
       //Custom reduce functions to split events up with multiple keys
       function reduceAdd(p, v) {
         var keys = Object.keys(v.actors);

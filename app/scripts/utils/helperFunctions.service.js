@@ -38,7 +38,7 @@
             });
           } else {
             splitAndConcatActor(concatenatedActors, keysActors)
-          }          
+          }
         });
       }
       var uniqueActors = arrayUnique(concatenatedActors);

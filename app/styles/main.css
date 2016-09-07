@@ -171,28 +171,60 @@ th, td {
   white-space:nowrap;
 }
 
+.dc-table-column._0 {
+    width: 5%;
+}
+
 .col_0 {
-  width: 50px;
+    width: 5%;
+}
+
+.dc-table-column._1 {
+    width: 10%;
 }
 
 .col_1 {
-  width: 200px;
+    width: 10%;
+}
+
+.dc-table-column._2 {
+    width: 5%;
 }
 
 .col_2 {
-    width: 50px;
+    width: 5%;
+}
+
+.dc-table-column._3 {
+    width: 10%;
 }
 
 .col_3 {
-    width: 50px;
+    width: 10%;
+}
+
+.dc-table-column._4 {
+    width: 10%;
 }
 
 .col_4 {
-  width: 100px;
+    width: 10%;
+}
+
+.dc-table-column._5 {
+    width: 15%;
 }
 
 .col_5 {
-    width: 600px;
+    width: 15%;
+}
+
+.dc-table-column._6 {
+    width: 25%;
+}
+
+.col_6 {
+    width: 25%;
 }
 
 .radio-parent {

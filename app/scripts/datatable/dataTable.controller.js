@@ -2,17 +2,6 @@
   'use strict';
 
   function DataTableController($element, d3, dc, NdxService, HelperFunctions, Messagebus) {
-    var sources = {};
-    var findMine = function(sources, uri) {
-      var result;
-      sources.forEach(function(source) {
-        if (source.uri.localeCompare(uri) === 0) {
-          result = source;
-        }
-      });
-      return result;
-    };
-
     var sourceToHtml = function(d) {
       var result = [];
       var raw = d.mentions;
@@ -50,37 +39,17 @@
       return html;
     };
 
-    var mentionToHtml = function(d, sources) {
-      var result = [];
+    var mentionToHtml = function(d) {
       var raw = d.mentions;
-      raw.forEach(function(mention) {
-        var uri = mention.uri[0];
-        if (mention.uri[1] !== undefined) {
-          console.log('unparsed mention here');
-        }
-        var charStart = parseInt(mention.char[0]);
-        var charEnd = parseInt(mention.char[1]);
-
-        var found = findMine(sources, uri);
-
-        // var meta = raw[i+1].split('=');
-        // var sentence = meta[meta.length-1];
-        if (found) {
-          result.push({
-            charStart: charStart,
-            charEnd: charEnd,
-            text: found.text
-          });
-        }
-      });
       var html = '';
-      result.forEach(function(phrase) {
-        var pre = phrase.text.substring(phrase.charStart - 60, phrase.charStart);
-        var word = phrase.text.substring(phrase.charStart, phrase.charEnd);
-        var post = phrase.text.substring(phrase.charEnd, phrase.charEnd + 60);
+      raw.forEach(function(mention) {
+        var pre = mention.snippet[0].substring(0, mention.snippet_char[0]);
+        var word = mention.snippet[0].substring(mention.snippet_char[0],mention.snippet_char[1]);
+        var post = mention.snippet[0].substring(mention.snippet_char[1], mention.snippet[0].length);
 
-        html += pre + '<span class=\'highlighted-mention\'>' + word + '</span>' + post + '</br>';
-      });
+
+        html += '<div>' + pre + '<span class=\'highlighted-mention\'>' + word + '</span>' + post + '</div>';
+      }.bind(this));
       return html;
     };
 
@@ -134,53 +103,54 @@
         .order(d3.ascending)
         .columns([
         {
-          label: '<div class=col_0>Year</div>',
+          label: '<div class="col_0">Year</div>',
           format: function(d) {
             var time = d3.time.format('%Y%m%d').parse(d.time);
-            return '<div class=col_0>' + time.getDate() + '/' + (time.getMonth()+1) + '/' + time.getFullYear() + '</div>';
+            return '<div class="col_0">' + time.getDate() + '/' + (time.getMonth()+1) + '/' + time.getFullYear() + '</div>';
           }
         }, {
-          label: '<div class=col_1>Source</div>',
+          label: '<div class="col_1">Source</div>',
           format: function(d) {
-            return '<div class=col_1>' + sourceToHtml(d) + '</div>';
+            return '<div class="col_1">' + sourceToHtml(d) + '</div>';
           }
         }, {
-          label: '<div class=col_2>Char Offset</div>',
+          label: '<div class="col_2">Emotion</div>',
           format: function(d) {
-            return '<div class=col_2>' + mentionCharToHtml(d) + '</div>';
+            return '<div class="col_2">' + d.groupName + '</div>';
           }
         }, {
-          label: '<div class=col_3>Emotion</div>',
+          label: '<div class="col_3">Char Offset</div>',
           format: function(d) {
-            return d.groupName;
+            return '<div class="col_3">' + mentionCharToHtml(d) + '</div>';
           }
         }, {
-          label: '<div class=col_4>Body Parts</div>',
+          label: '<div class="col_4">Body Parts</div>',
           format: function(d) {
             var result = '';
             Object.keys(d.actors).forEach(function(key) {
               result += key + ' ';
             });
-            return '<div class=col_4>' + result + '</div>';
+            return '<div class="col_4">' + result + '</div>';
           }
         }, {
-          label: '<div class=col_5>Mentions</div>',
+          label: '<div class="col_5">Labels</div>',
           format: function(d) {
-            return '<div class=col_5>' + mentionToHtml(d, sources) + '</div>';
+            var html = '<div class="col_5">';
+            if (Array.isArray(d.labels)) {
+              d.labels.forEach(function(l){
+                html +=  '<div>' + l + '</div>';
+              });
+            } else {
+              html +=  '<div>' + d.labels + '</div>';
+            }
+
+            return html + '</div>';
           }
-        // }
-        // , {
-        //   label: 'Labels',
-        //   format: function(d) {
-        //     var result = '';
-        //     if (d.labels) {
-        //       d.labels.forEach(function(l) {
-        //         result += l + '</br>';
-        //       });
-        //     }
-        //
-        //     return result;
-        //   }
+        }, {
+          label: '<div class="col_6">Mentions</div>',
+          format: function(d) {
+            return '<div class="col_6">' + mentionToHtml(d) + '</div>';
+          }
         }]);
 
       this.tableUpdate();
@@ -188,7 +158,6 @@
     };
 
     Messagebus.subscribe('crossfilter ready', function() {
-      sources = NdxService.getData().timeline.sources;
       this.initializeChart();
     }.bind(this));
   }
