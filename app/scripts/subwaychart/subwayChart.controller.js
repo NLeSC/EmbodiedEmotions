@@ -26,9 +26,6 @@
               p.labels[l] = (p.labels[l] || 0) + 1;
             });
           }
-          //  else {
-          //   p.labels.none = (p.labels.none || 0) + 1;
-          // }
 
           p.groups[v.groupName] = (p.groups[v.groupName] || 0) + 1;
 
@@ -49,15 +46,12 @@
               p.labels[l] = (p.labels[l] || 0) - 1;
             });
           }
-          // else {
-          //   p.labels.none = (p.labels.none || 0) - 1;
-          // }
 
           p.groups[v.groupName] = (p.groups[v.groupName] || 0) + 1;
 
           //Push mentions over all events fitting this time and group.
           v.mentions.forEach(function(m) {
-            p.mentions.pop(m);
+            delete p.mentions[p.mentions.indexOf(m)];
           });
 
           return p;
