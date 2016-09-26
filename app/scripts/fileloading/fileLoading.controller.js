@@ -5,6 +5,7 @@
     var me = this;
     this.fileName = uncertConf.DATA_JSON_URL;
     this.query = uncertConf.DATA_JSON_URL;
+    this.prefix = uncertConf.SERVER_JSON_PREFIX;
     this.list = DataService.getFileList();
 
     this.clear = function() {
@@ -35,7 +36,7 @@
 
     this.selectData = function(fileName) {
       this.fileName = fileName;
-    }
+    };
 
     this.openServerFile = function(fileName) {
       DataService.ready.then(function() {

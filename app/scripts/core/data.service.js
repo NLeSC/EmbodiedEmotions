@@ -8,7 +8,7 @@
    * @class
    * @memberOf core
    */
-  function DataService($http, $q, $log, $timeout, d3, uncertConf, Messagebus, toastr) {
+  function DataService($http, $q, $log, $timeout, d3, uncertConf, Messagebus, toastr, NdxService) {
     var me = this;
     this.data = {};
     var deferred = $q.defer();
@@ -22,6 +22,8 @@
     this.ready = deferred.promise;
 
     this.doLoad = function(fileName) {
+      NdxService.resetData();
+
       d3.json(fileName, function(error, json) {
         if (error) {
           return console.warn(error);
@@ -89,7 +91,7 @@
     }.bind(this);
 
     this.getFileList = function() {
-      return uncertConf.BODY_PARTS;
+      return uncertConf.EMOTIONS;
     };
 
     Messagebus.subscribe('data request', this.urlload);

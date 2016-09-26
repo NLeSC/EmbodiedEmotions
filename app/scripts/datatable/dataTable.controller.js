@@ -26,8 +26,7 @@
       return html;
     };
 
-    var mentionCharToHtml = function(d, sources) {
-      var result = [];
+    var mentionCharToHtml = function(d) {
       var raw = d.mentions;
       var html = '';
       raw.forEach(function(mention) {
@@ -44,9 +43,8 @@
       var html = '';
       raw.forEach(function(mention) {
         var pre = mention.snippet[0].substring(0, mention.snippet_char[0]);
-        var word = mention.snippet[0].substring(mention.snippet_char[0],mention.snippet_char[1]);
+        var word = mention.snippet[0].substring(mention.snippet_char[0], mention.snippet_char[1]);
         var post = mention.snippet[0].substring(mention.snippet_char[1], mention.snippet[0].length);
-
 
         html += '<div>' + pre + '<span class=\'highlighted-mention\'>' + word + '</span>' + post + '</div>';
       }.bind(this));
@@ -54,7 +52,7 @@
     };
 
     this.initializeChart = function() {
-      var dataTable = dc.dataTable('#'+$element[0].children[0].attributes.id.value);
+      var dataTable = dc.dataTable('#' + $element[0].children[0].attributes.id.value);
 
       //These parameters should make for fairly unique events
       var idDimension = NdxService.buildDimension(function(d) {
@@ -65,32 +63,32 @@
       this.ofs = 0;
       this.pag = 17;
       this.tableDisplay = function() {
-          d3.select('#begin').text(this.ofs);
-          d3.select('#end').text(this.ofs+this.pag-1);
-          d3.select('#last').attr('disabled', this.ofs-this.pag<0 ? 'true' : null);
-          d3.select('#next').attr('disabled', this.ofs+this.pag>=NdxService.getSize() ? 'true' : null);
-          d3.select('#size').text(NdxService.getSize());
+        d3.select('#begin').text(this.ofs);
+        d3.select('#end').text(this.ofs + this.pag - 1);
+        d3.select('#last').attr('disabled', this.ofs - this.pag < 0 ? 'true' : null);
+        d3.select('#next').attr('disabled', this.ofs + this.pag >= NdxService.getSize() ? 'true' : null);
+        d3.select('#size').text(NdxService.getSize());
       };
       this.tableUpdate = function() {
-          dataTable.beginSlice(this.ofs);
-          dataTable.endSlice(this.ofs+this.pag);
-          this.tableDisplay();
+        dataTable.beginSlice(this.ofs);
+        dataTable.endSlice(this.ofs + this.pag);
+        this.tableDisplay();
       };
       this.tableNext = function() {
-          this.ofs += this.pag;
-          this.tableUpdate();
-          dataTable.redraw();
+        this.ofs += this.pag;
+        this.tableUpdate();
+        dataTable.redraw();
       };
       this.tableLast = function() {
-          this.ofs -= this.pag;
-          this.tableUpdate();
-          dataTable.redraw();
+        this.ofs -= this.pag;
+        this.tableUpdate();
+        dataTable.redraw();
       };
 
       //Set up the
       dataTable
-        // .size(10)
-        // .width(1200)
+      // .size(10)
+      // .width(1200)
         .dimension(idDimension)
         .group(function() {
           return '';
@@ -101,55 +99,74 @@
           return d3.time.format('%Y%m%d').parse(d.time);
         })
         .order(d3.ascending)
-        .columns([
-        {
+        .columns([{
           label: '<div class="col_0">Year</div>',
           format: function(d) {
-            var time = d3.time.format('%Y%m%d').parse(d.time);
-            return '<div class="col_0">' + time.getDate() + '/' + (time.getMonth()+1) + '/' + time.getFullYear() + '</div>';
+            if (d !== undefined) {
+              var time = d3.time.format('%Y%m%d').parse(d.time);
+              return '<div class="col_0">' + time.getDate() + '/' + (time.getMonth() + 1) + '/' + time.getFullYear() + '</div>';
+            }
           }
         }, {
           label: '<div class="col_1">Source</div>',
+
           format: function(d) {
-            return '<div class="col_1">' + sourceToHtml(d) + '</div>';
+            if (d !== undefined) {
+              return '<div class="col_1">' + sourceToHtml(d) + '</div>';
+            }
           }
         }, {
           label: '<div class="col_2">Emotion</div>',
+
           format: function(d) {
-            return '<div class="col_2">' + d.groupName + '</div>';
+            if (d !== undefined) {
+              return '<div class="col_2">' + d.groupName + '</div>';
+            }
           }
         }, {
           label: '<div class="col_3">Char Offset</div>',
+
           format: function(d) {
-            return '<div class="col_3">' + mentionCharToHtml(d) + '</div>';
+            if (d !== undefined) {
+              return '<div class="col_3">' + mentionCharToHtml(d) + '</div>';
+            }
           }
         }, {
           label: '<div class="col_4">Body Parts</div>',
+
           format: function(d) {
-            var result = '';
-            Object.keys(d.actors).forEach(function(key) {
-              result += key + ' ';
-            });
-            return '<div class="col_4">' + result + '</div>';
+            if (d !== undefined) {
+              var result = '';
+              Object.keys(d.actors).forEach(function(key) {
+                result += key + ' ';
+              });
+              return '<div class="col_4">' + result + '</div>';
+            }
           }
         }, {
           label: '<div class="col_5">Labels</div>',
-          format: function(d) {
-            var html = '<div class="col_5">';
-            if (Array.isArray(d.labels)) {
-              d.labels.forEach(function(l){
-                html +=  '<div>' + l + '</div>';
-              });
-            } else {
-              html +=  '<div>' + d.labels + '</div>';
-            }
 
-            return html + '</div>';
+          format: function(d) {
+            if (d !== undefined) {
+              var html = '<div class="col_5">';
+              if (Array.isArray(d.labels)) {
+                d.labels.forEach(function(l) {
+                  html += '<div>' + l + '</div>';
+                });
+              } else {
+                html += '<div>' + d.labels + '</div>';
+              }
+
+              return html + '</div>';
+            }
           }
         }, {
           label: '<div class="col_6">Mentions</div>',
+
           format: function(d) {
-            return '<div class="col_6">' + mentionToHtml(d) + '</div>';
+            if (d !== undefined) {
+              return '<div class="col_6">' + mentionToHtml(d) + '</div>';
+            }
           }
         }]);
 
