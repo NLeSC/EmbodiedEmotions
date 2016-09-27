@@ -8,7 +8,7 @@
       raw.forEach(function(mention) {
         var source;
         if (mention.perspective[0]) {
-          source = mention.perspective[0].source;
+          source = '<div>' + mention.perspective[0].source + '</div>';
         } else {
           source = '';
         }
@@ -21,7 +21,7 @@
       });
       var html = '';
       result.forEach(function(phrase) {
-        html = phrase.source + '</br>';
+        html = '<div>' + phrase.source + '</div>';
       });
       return html;
     };
@@ -33,7 +33,7 @@
         var charStart = parseInt(mention.char[0]);
         var charEnd = parseInt(mention.char[1]);
 
-        html += charStart + ' - ' + charEnd + '</br>';
+        html += '<div>' + charStart + ' - ' + charEnd + '</div>';
       });
       return html;
     };
@@ -143,23 +143,23 @@
               return '<div class="col_4">' + result + '</div>';
             }
           }
-        }, {
-          label: '<div class="col_5">Labels</div>',
-
-          format: function(d) {
-            if (d !== undefined) {
-              var html = '<div class="col_5">';
-              if (Array.isArray(d.labels)) {
-                d.labels.forEach(function(l) {
-                  html += '<div>' + l + '</div>';
-                });
-              } else {
-                html += '<div>' + d.labels + '</div>';
-              }
-
-              return html + '</div>';
-            }
-          }
+        // }, {
+        //   label: '<div class="col_5">Labels</div>',
+        //
+        //   format: function(d) {
+        //     if (d !== undefined) {
+        //       var html = '<div class="col_5">';
+        //       if (Array.isArray(d.labels)) {
+        //         d.labels.forEach(function(l) {
+        //           html += '<div>' + l + '</div>';
+        //         });
+        //       } else {
+        //         html += '<div>' + d.labels + '</div>';
+        //       }
+        //
+        //       return html + '</div>';
+        //     }
+        //   }
         }, {
           label: '<div class="col_6">Mentions</div>',
 
