@@ -27,8 +27,44 @@ body {
   background: #fafafa;
 }
 
+.content-grid {
+  max-width: 1280px;
+}
+
 .mdl-grid {
   padding: 0;
+}
+
+.utilities-bar {
+  border-top: 1px solid;
+  border-bottom: 1px solid;
+}
+
+.mdl-textfield {
+    position: relative;
+    font-size: 16px;
+    display: inline-block;
+    box-sizing: border-box;
+    width: 300px;
+    max-width: 100%;
+    margin: 0;
+    padding: 0px 0;
+}
+
+.mdl-textfield__label {
+    bottom: 0;
+    color: rgba(0,0,0,.26);
+    font-size: 16px;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    top: 6px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: left;
 }
 
 #pagetitle {
@@ -135,18 +171,25 @@ g.node.selected {
   background-image: url("../images/VUlogo.png");
   height: 100px;
   width: 100%;
-  background-size: 60% auto;
+  background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position-x: 50px;
 }
 
 .logo-nwr {
-  background-image: url("../images/NWR_logo_1920x200.png");
+  background-image: url("../images/NWRlogo.png");
   height: 100px;
   width: 100%;
   background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position-y: 35px;
+}
+
+.logo-embemo {
+  background-image: url("../images/EmbodiedEmotions.png");
+  height: 100px;
+  width: 100%;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position-y: -10px;
 }
 
 .logo-nlesc {
@@ -155,7 +198,6 @@ g.node.selected {
   width: 100%;
   background-size: 100% auto;
   background-repeat: no-repeat;
-  background-position-y: 40px;
 }
 
 .dc-data-table {
@@ -233,4 +275,13 @@ th, td {
 
 .radio-child {
     margin: auto;
+}
+
+.search-textfield {
+  width: 100%;
+}
+
+.file-dropdown {
+  width: 100%;
+  overflow:hidden;
 }

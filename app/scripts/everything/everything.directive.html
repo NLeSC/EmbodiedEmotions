@@ -1,86 +1,70 @@
-<div class="mdl-grid">
-  <div class="mdl-cell mdl-cell--4-col">
-    <div class="logo-vu"></div>
-  </div>
-  <div class="mdl-cell mdl-cell--4-col">
-    <div class="logo-nwr"></div>
-  </div>
-  <div class="mdl-cell mdl-cell--4-col">
-    <div class="logo-nlesc"></div>
-  </div>
+<div class="content-grid mdl-grid ">
+    <div class="mdl-grid mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--1-col-phone">
+            <div class="logo-vu"></div>
+        </div>
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+            <div class="logo-embemo"></div>
+        </div>
+        <div class="mdl-cell mdl-cell--4-col mdl-cell--2-col-tablet mdl-cell--1-col-phone">
+            <div class="logo-nlesc"></div>
+        </div>
+    </div>
+
+    <div class="mdl-grid mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone utilities-bar">
+        <full-text-crossfilter-search-directive
+            chart-header="Search for keywords"
+            ndx-service-name="software"
+            json-fields="actors.actor:, mentions.perspective.source, mentions.snippet, prefLabel, labels"
+            class="mdl-cell--2-col mdl-cell--2-col-tablet mdl-cell--2-col-phone"></full-text-crossfilter-search-directive>
+          <div class="mdl-layout-spacer">
+          </div>
+        <file-loading-directive class="mdl-cell--10-col mdl-cell--5-col-tablet mdl-cell--2-col-phone"></file-loading-directive>
+    </div>
+
+    <div class="mdl-grid mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+      <breadcrumbs-directive></breadcrumbs-directive>
+    </div>
+
+    <div class="mdl-grid mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-cell mdl-cell--2-col mdl-cell--1-col-tablet mdl-cell--4-col-phone myChart">
+            <all-actor-chart-directive></all-actor-chart-directive>
+        </div>
+        <div class="mdl-cell mdl-cell--10-col mdl-cell--7-col-tablet mdl-cell--4-col-phone myChart">
+            <subway-chart-directive></subway-chart-directive>
+        </div>
+    </div>
+
+    <div class="mdl-grid mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone myChart">
+        <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <areachart-directive></areachart-directive>
+        </div>
+        <div class="mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+            <linechart-directive></linechart-directive>
+        </div>
+    </div>
+
+    <!-- <div class="mdl-grid mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-cell mdl-cell--12-col myChart">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--2-col">
+                    <group-row-chart-directive></group-row-chart-directive>
+                </div>
+                <div class="mdl-cell mdl-cell--10-col">
+                    <lane-chart-directive></lane-chart-directive>
+                </div>
+            </div>
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--12-col">
+                    <series-chart-directive></series-chart-directive>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="mdl-grid mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-cell mdl-cell--12-col myChart">
+            <datatable-directive></datatable-directive>
+        </div>
+    </div>
 </div>
-
-<full-text-crossfilter-search-directive
-  chart-header="Search for keywords"
-  ndx-service-name="software"
-  json-fields="actors.actor:, mentions.perspective.source, mentions.snippet, prefLabel, labels">
-</full-text-crossfilter-search-directive>
-
-<!-- <div ng-click="everything.changeView('logos')"> logo's only </div> -->
-
-<file-loading-directive></file-loading-directive>
-<breadcrumbs-directive></breadcrumbs-directive>
-
-<!-- <div class="mdl-grid"> -->
-  <!-- <div class="mdl-cell mdl-cell--12-col"> -->
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--2-col myChart">
-        <all-actor-chart-directive></all-actor-chart-directive>
-      </div>
-      <div class="mdl-cell mdl-cell--10-col myChart">
-        <subway-chart-directive></subway-chart-directive>
-      </div>
-    </div>
-
-    <div class="mdl-grid myChart">
-      <!-- <div class="mdl-cell mdl-cell--12-col">
-        <time-chart-directive></time-chart-directive>
-      </div> -->
-      <div class="mdl-cell mdl-cell--12-col">
-        <areachart-directive></areachart-directive>
-      </div>
-      <div class="mdl-cell mdl-cell--12-col">
-        <linechart-directive></linechart-directive>
-      </div>
-    </div>
-
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col myChart">
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--2-col">
-            <group-row-chart-directive></group-row-chart-directive>
-          </div>
-          <div class="mdl-cell mdl-cell--10-col">
-            <lane-chart-directive></lane-chart-directive>
-          </div>
-        </div>
-        <div class="mdl-grid">
-          <div class="mdl-cell mdl-cell--12-col">
-            <series-chart-directive></series-chart-directive>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--2-col myChart">
-        <all-citations-chart-directive></all-citations-chart-directive>
-        <all-authors-chart-directive></all-authors-chart-directive>
-      </div>
-      <div class="mdl-cell mdl-cell--10-col myChart">
-        <perspective-lane-chart-directive></perspective-lane-chart-directive>
-        <perspective-lane-chart-option-selector-directive></perspective-lane-chart-option-selector-directive>
-      </div>
-    </div>
-  </div> -->
-
-
-  <!-- <div class="mdl-cell mdl-cell--12-col"> -->
-    <div class="mdl-grid">
-      <div class="mdl-cell mdl-cell--12-col myChart">
-        <datatable-directive></datatable-directive>
-      </div>
-    </div>
-  <!-- </div> -->
-<!-- </div> -->

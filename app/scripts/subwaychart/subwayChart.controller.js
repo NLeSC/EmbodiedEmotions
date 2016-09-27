@@ -137,21 +137,21 @@
       })
 
       //Labels printed just above the bubbles
-      .renderLabel(true)
-        .minRadiusWithLabel(0)
-        .label(function(p) {
-          var mostImportantGroup;
-          var scoreOfMostImportantGroup = -1;
-          //Get the most important label (highest climax score)
-          var groups = Object.keys(p.value.groups);
-          groups.forEach(function(g) {
-            if (p.value.groups[g] > scoreOfMostImportantGroup) {
-              mostImportantGroup = g;
-              scoreOfMostImportantGroup = p.value.groups[g];
-            }
-          });
-          return mostImportantGroup.toString(); //p.key;
-        })
+      .renderLabel(false)
+        // .minRadiusWithLabel(0)
+        // .label(function(p) {
+        //   var mostImportantGroup;
+        //   var scoreOfMostImportantGroup = -1;
+        //   //Get the most important label (highest climax score)
+        //   var groups = Object.keys(p.value.groups);
+        //   groups.forEach(function(g) {
+        //     if (p.value.groups[g] > scoreOfMostImportantGroup) {
+        //       mostImportantGroup = g;
+        //       scoreOfMostImportantGroup = p.value.groups[g];
+        //     }
+        //   });
+        //   return mostImportantGroup.toString(); //p.key;
+        // })
 
       //Information on hover
       .renderTitle(true)
